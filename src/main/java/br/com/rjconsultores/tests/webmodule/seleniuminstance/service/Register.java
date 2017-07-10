@@ -1,28 +1,45 @@
 package br.com.rjconsultores.tests.webmodule.seleniuminstance.service;
 
+import javax.inject.Inject;
+
 import br.com.caelum.vraptor.Consumes;
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
-import br.com.caelum.vraptor.serialization.gson.WithoutRoot;
-import br.com.rjconsultores.tests.webmodule.seleniuminstance.entity.Screen;
+import br.com.caelum.vraptor.Result;
+import br.com.caelum.vraptor.view.Results;
+import br.com.rjconsultores.tests.webmodule.seleniuminstance.entity.System;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.factory.RegisterFactory;
+import br.com.rjconsultores.tests.webmodule.seleniuminstance.service.request.Request;
+import br.com.rjconsultores.tests.webmodule.seleniuminstance.service.response.Response;
 
 @Controller
-@Path("/register")
+@Path("register")
 public class Register {
 
-	@Consumes(value = "application/json", options = WithoutRoot.class)
-	@Path("system")
-	@Post
-	public void doRegisterSystem(System system) {
-		RegisterFactory.INSTANCE().registerSystem(system);	
-	}
+	@Inject
+	private Result result;
 	
-	@Consumes(value = "application/json", options = WithoutRoot.class)
-	@Path("screen")
-	@Post
-	public void doRegisterScreen(Screen screen) {
-		RegisterFactory.INSTANCE().registerScreen(screen);	
+	@Post("screen")
+	@Consumes("application/json")
+	public Response doRegisterSystem(Request request) {
+		Response response = null;
+		
+		System newSystem = new System();
+		newSystem.setAddress("dkflmsdkm");
+		newSystem.setName("dkflmsdkm");
+		newSystem.setPort("3434");
+			
+		response = RegisterFactory.INSTANCE().registerScreen(request);
+		
+		//para uso nos casos de teste
+		//TODO - RESOLVER O USO DE INJECT COM TESTES UNITÁRIOS
+		if (result == null) {
+			return response;
+		}
+		
+		result.use(Results.json()).withoutRoot().from(response).serialize();
+		
+		return response;
 	}
 }

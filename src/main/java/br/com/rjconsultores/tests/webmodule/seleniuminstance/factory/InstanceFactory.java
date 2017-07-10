@@ -1,30 +1,26 @@
 package br.com.rjconsultores.tests.webmodule.seleniuminstance.factory;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.Collection;
 
-import br.com.rjconsultores.tests.webmodule.seleniuminstance.entity.Screen;
+import javax.inject.Inject;
+
+import br.com.rjconsultores.tests.webmodule.seleniuminstance.entity.System;
 
 class InstanceFactory {
 	private static InstanceFactory INSTANCE;
-	private static Set<System> systems;
-	private static Set<Screen> screens;
-	
+
+	@Inject
+	private Collection<System> systems;
+
 	static InstanceFactory INSTANCE() {
 		if (INSTANCE == null) {
 			INSTANCE = new InstanceFactory();
-			systems = new LinkedHashSet<>();
-			screens = new LinkedHashSet<>();
 		}
-		
+
 		return INSTANCE;
 	}
-	
-	public static Set<System> getSystems() {
+
+	public Collection<System> getSystems() {
 		return systems;
-	}
-	
-	public static Set<Screen> getScreens() {
-		return screens;
 	}
 }
