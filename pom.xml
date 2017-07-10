@@ -27,6 +27,7 @@
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 					<warName>seleniuminstance</warName>
 					<display-name>seleniuminstance</display-name>
+					<outputDirectory>C:\Ambiente\as\wildfly-10.1.0.Final\standalone\deployments</outputDirectory>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -37,6 +38,12 @@
 			<groupId>br.com.caelum</groupId>
 			<artifactId>vraptor</artifactId>
 			<version>4.1.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
 		</dependency>
 
 		<dependency>
@@ -52,5 +59,30 @@
 			<version>1</version>
 			<scope>provided</scope>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/junit/junit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.9.5</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.0</version>
+		</dependency>
+
 	</dependencies>
 </project>
