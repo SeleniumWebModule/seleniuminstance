@@ -1,45 +1,50 @@
 package br.com.rjconsultores.tests.seleniuminstance.service.test.entity;
 
 import java.util.Collection;
-import java.util.Set;
 
 import org.junit.Test;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 
+import br.com.rjconsultores.tests.seleniuminstance.enums.OperationType;
+import br.com.rjconsultores.tests.seleniuminstance.service.test.utilities.ConstanteUtil;
+import br.com.rjconsultores.tests.seleniuminstance.service.test.utilities.GenerateUtil;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.entity.Attribute;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.entity.Component;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.entity.Event;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.entity.Rule;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.entity.Screen;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.entity.System;
-import br.com.rjconsultores.tests.webmodule.seleniuminstance.service.request.OperationType;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.service.request.Request;
 
-public class ValidateEntries {
+public class ValidateEntriesTest {
 	
 	@Test
 	public void validateSystem() {
 		System systemMock = Mockito.mock(System.class);
 		
-		systemMock.setName(Mockito.anyString());
+		String name = GenerateUtil.getRandomString(ConstanteUtil.SIZE_DEFAULT_NAME);
+		String address = GenerateUtil.getRandomString(ConstanteUtil.SIZE_DEFAULT_ADDRESS);
+		String port = GenerateUtil.getRandomNumber(ConstanteUtil.SIZE_DEFAULT_PORT);
+		
+		systemMock.setName(name);
 		systemMock.getName();
 
-		systemMock.setAddress(Mockito.anyString());
+		systemMock.setAddress(address);
 		systemMock.getAddress();
 
-		systemMock.setPort(Mockito.anyString());
+		systemMock.setPort(port);
 		systemMock.getPort();
 
 		systemMock.registerScreen(Mockito.any(Screen.class));
 		
 		Collection<Screen> screens = systemMock.listScreens();
 		
-		Mockito.verify(systemMock).setName(Mockito.anyString());
+		Mockito.verify(systemMock).setName(name);
 		Mockito.verify(systemMock).getName();
-		Mockito.verify(systemMock).setAddress(Mockito.anyString());
+		Mockito.verify(systemMock).setAddress(address);
 		Mockito.verify(systemMock).getAddress();
-		Mockito.verify(systemMock).setPort(Mockito.anyString());
+		Mockito.verify(systemMock).setPort(port);
 		Mockito.verify(systemMock).getPort();
 		Mockito.verify(systemMock).registerScreen(Mockito.any(Screen.class));
 		
@@ -50,7 +55,9 @@ public class ValidateEntries {
 	public void validadeScreen() {
 		Screen screenMock = Mockito.mock(Screen.class);
 		
-		screenMock.setName(Mockito.anyString());
+		String name = GenerateUtil.getRandomString(ConstanteUtil.SIZE_DEFAULT_NAME);
+		
+		screenMock.setName(name);
 		screenMock.getName();
 		
 		screenMock.registerAttribute(Mockito.any(Attribute.class));
@@ -59,7 +66,7 @@ public class ValidateEntries {
 		Collection<Attribute> attributes = screenMock.listAttributes();
 		Collection<Component> components = screenMock.listComponents();
 		
-		Mockito.verify(screenMock).setName(Mockito.anyString());
+		Mockito.verify(screenMock).setName(name);
 		Mockito.verify(screenMock).getName();
 		Mockito.verify(screenMock).registerAttribute(Mockito.any(Attribute.class));
 		
@@ -71,22 +78,25 @@ public class ValidateEntries {
 	public void validateComponent() {
 		Component componentMock = Mockito.mock(Component.class);
 		
-		componentMock.setName(Mockito.anyString());
+		String name = GenerateUtil.getRandomString(ConstanteUtil.SIZE_DEFAULT_NAME);
+		String description = GenerateUtil.getRandomString(ConstanteUtil.SIZE_DEFAULT_DESCRIPTION);
+		
+		componentMock.setName(name);
 		componentMock.getName();
 		
-		componentMock.setDescricao(Mockito.anyString());
-		componentMock.getDescricao();
+		componentMock.setDescription(description);
+		componentMock.getDescription();
 		
 		componentMock.registerAttribute(Mockito.any(Attribute.class));
 		componentMock.registerEvent(Matchers.any(Event.class));
 		
-		Set<Attribute> attributes = componentMock.listAttributes();
-		Set<Event> events = componentMock.listEvents();
+		Collection<Attribute> attributes = componentMock.listAttributes();
+		Collection<Event> events = componentMock.listEvents();
 		
-		Mockito.verify(componentMock).setName(Mockito.anyString());
+		Mockito.verify(componentMock).setName(name);
 		Mockito.verify(componentMock).getName();
-		Mockito.verify(componentMock).setDescricao(Mockito.anyString());
-		Mockito.verify(componentMock).getDescricao();
+		Mockito.verify(componentMock).setDescription(description);
+		Mockito.verify(componentMock).getDescription();
 		Mockito.verify(componentMock).registerAttribute(Matchers.any(Attribute.class));
 		Mockito.verify(componentMock).registerEvent(Matchers.any(Event.class));
 		
@@ -98,20 +108,23 @@ public class ValidateEntries {
 	public void validateEvent() {
 		Event eventMock = Mockito.mock(Event.class);
 		
-		eventMock.setName(Mockito.anyString());
+		String name = GenerateUtil.getRandomString(ConstanteUtil.SIZE_DEFAULT_NAME);
+		String description = GenerateUtil.getRandomString(ConstanteUtil.SIZE_DEFAULT_DESCRIPTION);
+		
+		eventMock.setName(name);
 		eventMock.getName();
 		
-		eventMock.setDescricao(Mockito.anyString());
-		eventMock.getDescricao();
+		eventMock.setDescription(description);
+		eventMock.getDescription();
 		
 		eventMock.registerRule(Mockito.any(Rule.class));
 		
 		Collection<Rule> rules = eventMock.listRules();
 		
-		Mockito.verify(eventMock).setName(Mockito.anyString());
+		Mockito.verify(eventMock).setName(name);
 		Mockito.verify(eventMock).getName();
-		Mockito.verify(eventMock).setDescricao(Mockito.anyString());
-		Mockito.verify(eventMock).getDescricao();
+		Mockito.verify(eventMock).setDescription(description);
+		Mockito.verify(eventMock).getDescription();
 		
 		Mockito.when(eventMock.listRules()).thenReturn(rules);
 	}
@@ -120,34 +133,40 @@ public class ValidateEntries {
 	public void validateRule() {
 		Rule ruleMock = Mockito.mock(Rule.class);
 		
-		ruleMock.setName(Mockito.anyString());
+		String name = GenerateUtil.getRandomString(ConstanteUtil.SIZE_DEFAULT_NAME);
+		String description = GenerateUtil.getRandomString(ConstanteUtil.SIZE_DEFAULT_DESCRIPTION);
+		
+		ruleMock.setName(name);
 		ruleMock.getName();
 		
-		ruleMock.setDescricao(Mockito.anyString());
-		ruleMock.getDescricao();
+		ruleMock.setDescription(description);
+		ruleMock.getDescription();
 		
-		Mockito.verify(ruleMock).setName(Mockito.anyString());
+		Mockito.verify(ruleMock).setName(name);
 		Mockito.verify(ruleMock).getName();
 		
-		Mockito.verify(ruleMock).setDescricao(Mockito.anyString());
-		Mockito.verify(ruleMock).getDescricao();
+		Mockito.verify(ruleMock).setDescription(description);
+		Mockito.verify(ruleMock).getDescription();
 	}
 	
 	@Test
 	public void validateAttribute() {
 		Attribute attributeMock = Mockito.mock(Attribute.class);
 		
-		attributeMock.setName(Mockito.anyString());
+		String name = GenerateUtil.getRandomString(ConstanteUtil.SIZE_DEFAULT_NAME);
+		String description = GenerateUtil.getRandomString(ConstanteUtil.SIZE_DEFAULT_DESCRIPTION);
+		
+		attributeMock.setName(name);
 		attributeMock.getName();
 		
-		attributeMock.setDescricao(Mockito.anyString());
-		attributeMock.getDescricao();
+		attributeMock.setDescription(description);
+		attributeMock.getDescription();
 		
-		Mockito.verify(attributeMock).setName(Mockito.anyString());
+		Mockito.verify(attributeMock).setName(name);
 		Mockito.verify(attributeMock).getName();
 		
-		Mockito.verify(attributeMock).setDescricao(Mockito.anyString());
-		Mockito.verify(attributeMock).getDescricao();
+		Mockito.verify(attributeMock).setDescription(description);
+		Mockito.verify(attributeMock).getDescription();
 	}
 	
 	@Test

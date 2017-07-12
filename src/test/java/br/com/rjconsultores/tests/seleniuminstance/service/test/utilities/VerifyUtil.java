@@ -12,8 +12,16 @@ public class VerifyUtil {
 	}
 	
 	public static void verifyError(ResponseError responseExpected, Response responseActual) {
-		Assert.assertEquals(responseExpected.getClass(), responseActual.getClass());
-		Assert.assertEquals(responseExpected.getStatusResponse(), responseActual.getStatusResponse());
-		Assert.assertEquals(responseExpected.getInstanceException().getMessage(), responseActual.getInstanceException().getMessage());
+		Assert.assertEquals(responseExpected.getClass(), 
+				responseActual.getClass());
+		
+		Assert.assertEquals(responseExpected.getStatusResponse(), 
+				responseActual.getStatusResponse());
+		
+		Assert.assertEquals(responseExpected.getInstanceException().getMessage(), 
+				responseActual.getInstanceException().getMessage());
+		
+		Assert.assertEquals(responseExpected.getInstanceException().getSourceEvent().getDescription(), 
+				responseActual.getInstanceException().getSourceEvent().getDescription());
 	}
 }

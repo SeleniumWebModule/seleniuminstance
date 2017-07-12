@@ -3,15 +3,15 @@ package br.com.rjconsultores.tests.seleniuminstance.service.test.register;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import br.com.rjconsultores.tests.seleniuminstance.enums.OperationType;
 import br.com.rjconsultores.tests.seleniuminstance.exception.SeleniumInstanceException;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.entity.System;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.factory.RegisterFactory;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.service.Register;
-import br.com.rjconsultores.tests.webmodule.seleniuminstance.service.request.OperationType;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.service.request.Request;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.service.response.Response;
 
-public class RegisterServiceMock {
+public class RegisterServiceMockTest {
 
 	@SuppressWarnings("unchecked")
 	@Test

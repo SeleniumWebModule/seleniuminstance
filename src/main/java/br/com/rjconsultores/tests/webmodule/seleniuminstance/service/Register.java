@@ -8,7 +8,6 @@ import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
-import br.com.rjconsultores.tests.webmodule.seleniuminstance.entity.System;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.factory.RegisterFactory;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.service.request.Request;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.service.response.Response;
@@ -23,14 +22,7 @@ public class Register {
 	@Post("screen")
 	@Consumes("application/json")
 	public Response doRegisterSystem(Request request) {
-		Response response = null;
-		
-		System newSystem = new System();
-		newSystem.setAddress("dkflmsdkm");
-		newSystem.setName("dkflmsdkm");
-		newSystem.setPort("3434");
-			
-		response = RegisterFactory.INSTANCE().registerScreen(request);
+		Response response = RegisterFactory.INSTANCE().registerScreen(request);
 		
 		//para uso nos casos de teste
 		//TODO - RESOLVER O USO DE INJECT COM TESTES UNITÁRIOS

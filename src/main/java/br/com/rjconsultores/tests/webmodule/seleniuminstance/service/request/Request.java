@@ -1,5 +1,6 @@
 package br.com.rjconsultores.tests.webmodule.seleniuminstance.service.request;
 
+import br.com.rjconsultores.tests.seleniuminstance.enums.OperationType;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.entity.System;
 
 public class Request {

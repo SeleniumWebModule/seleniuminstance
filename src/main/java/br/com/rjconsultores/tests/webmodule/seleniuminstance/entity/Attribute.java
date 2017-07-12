@@ -1,9 +1,19 @@
 package br.com.rjconsultores.tests.webmodule.seleniuminstance.entity;
 
-public class Attribute {
-	private String name;
-	private String descricao;
+import br.com.rjconsultores.tests.seleniuminstance.enums.SourceEvent;
+import br.com.rjconsultores.tests.seleniuminstance.exception.SeleniumInstanceException;
+import br.com.rjconsultores.tests.seleniuminstance.util.ValidateUtil;
 
+public class Attribute implements Entity{
+	
+	private String name;
+	private String description;
+	private SourceEvent sourceEvent;
+	
+	public Attribute() {
+		sourceEvent = SourceEvent.ATTRIBUTE;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -12,11 +22,17 @@ public class Attribute {
 		this.name = name;
 	}
 
-	public String getDescricao() {
-		return descricao;
+	public String getDescription() {
+		return description;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	@Override
+	public void validate() throws SeleniumInstanceException {
+		ValidateUtil.validateField(sourceEvent, "name", getName(), 30);
+		ValidateUtil.validateField(sourceEvent, "description", getDescription(), 400);
 	}
 }
