@@ -18,7 +18,7 @@ public class RegisterTest {
 	
 	@Test
 	public void validateRequestNull( ) {
-		VerifyUtil.verifyAndThrowsResourceRequireException(null, sourceEvent, "A requisição não pode ter um valor null. "
+		VerifyUtil.verifyAndThrowsRequireResourceException(null, sourceEvent, "A requisição não pode ter um valor null. "
 				+ "Você deve passar um sistema com suas telas e componentes.");
 	}
 }

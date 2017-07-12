@@ -4,30 +4,28 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.com.rjconsultores.tests.seleniuminstance.enums.SourceEvent;
-import br.com.rjconsultores.tests.seleniuminstance.exception.FieldRequireException;
-import br.com.rjconsultores.tests.seleniuminstance.exception.FieldSizeOverflowException;
-import br.com.rjconsultores.tests.seleniuminstance.exception.ResourceRequiredException;
 import br.com.rjconsultores.tests.seleniuminstance.service.test.utilities.ConstanteUtil;
 import br.com.rjconsultores.tests.seleniuminstance.service.test.utilities.GenerateUtil;
 import br.com.rjconsultores.tests.seleniuminstance.service.test.utilities.VerifyUtil;
+import br.com.rjconsultores.tests.webmodule.seleniuminstance.entity.Attribute;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.entity.Component;
+import br.com.rjconsultores.tests.webmodule.seleniuminstance.entity.Event;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.entity.Screen;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.entity.System;
-import br.com.rjconsultores.tests.webmodule.seleniuminstance.service.Register;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.service.request.Request;
-import br.com.rjconsultores.tests.webmodule.seleniuminstance.service.response.ResponseError;
 
 public class ComponentTest {
-	private Register register;
-	private Request request;
 	private System system;
 	private Screen screen;
 	
-
+	private SourceEvent sourceEvent;
+	
+	private String msgErrorRequiredEvent;
+	private String msgErrorEventNullValue;
+	private String msgErrorAttributeNullValue;
+	
 	@Before
-	public void init() {
-		register = new Register();
-		
+	public void init() {		
 		system = new System();
 		system.setName(GenerateUtil.getRandomString(ConstanteUtil.SIZE_DEFAULT_NAME));
 		system.setAddress(GenerateUtil.getRandomString(ConstanteUtil.SIZE_DEFAULT_NAME));
@@ -35,94 +33,92 @@ public class ComponentTest {
 		
 		screen = new Screen();
 		screen.setName(GenerateUtil.getRandomString(ConstanteUtil.SIZE_DEFAULT_NAME));
+		
+		sourceEvent = SourceEvent.COMPONENT;
+		
+		msgErrorRequiredEvent = "Um ou mais eventos devem estar associados ao componente";
+		msgErrorEventNullValue = "O evento deve ser um valor válido e nulo não é um valor válido.";
+		msgErrorAttributeNullValue = "O atributo deve ser um valor válido e nulo não é um valor válido.";
 	}
 
 	@Test
 	public void validateNameRequiredError() {
-		request = new Request();
-		
 		Component component = new Component();
-		screen.registerComponent(component);
-		
-		system.registerScreen(screen);
-		request.setSystem(system);
-		VerifyUtil.verifyError(new ResponseError(new FieldRequireException(SourceEvent.COMPONENT, "name")),
-				register.doRegisterSystem(request));
+		VerifyUtil.verifyAndThrowsFieldRequireException(doRegisters(component), sourceEvent, "name");
 		
 		component.setName("");
-		screen.registerComponent(component);
-		system.registerScreen(screen);
-		request.setSystem(system);
-		VerifyUtil.verifyError(new ResponseError(new FieldRequireException(SourceEvent.COMPONENT, "name")),
-				register.doRegisterSystem(request));
+		VerifyUtil.verifyAndThrowsFieldRequireException(doRegisters(component), sourceEvent, "name");
 	}
 	
 	@Test
-	public void validateDescriptionRequiredError() {
-		request = new Request();
-		
+	public void validateDescriptionRequiredError() {		
 		Component component = new Component();
 		component.setName(GenerateUtil.getRandomString(ConstanteUtil.SIZE_DEFAULT_NAME));
-		screen.registerComponent(component);
-		
-		system.registerScreen(screen);
-		request.setSystem(system);
-		VerifyUtil.verifyError(new ResponseError(new FieldRequireException(SourceEvent.COMPONENT, "description")),
-				register.doRegisterSystem(request));
+		VerifyUtil.verifyAndThrowsFieldRequireException(doRegisters(component), sourceEvent, "description");
 		
 		component.setDescription("");
-		screen.registerComponent(component);
-		system.registerScreen(screen);
-		request.setSystem(system);
-		VerifyUtil.verifyError(new ResponseError(new FieldRequireException(SourceEvent.COMPONENT, "description")),
-				register.doRegisterSystem(request));
+		VerifyUtil.verifyAndThrowsFieldRequireException(doRegisters(component), sourceEvent, "description");
 	}
 	
 	@Test
 	public void validateNameOverflowError() {
-		request = new Request();
-		
 		Component component = new Component();
 		component.setName(GenerateUtil.getRandomString(ConstanteUtil.SIZE_OVERFLOW_NAME));
-		screen.registerComponent(component);
 		
-		system.registerScreen(screen);
-		request.setSystem(system);
-		
-		VerifyUtil.verifyError(new ResponseError(new FieldSizeOverflowException(SourceEvent.COMPONENT, "name")),
-			register.doRegisterSystem(request));
+		VerifyUtil.verifyAndThrowsFieldSizeOverflowException(doRegisters(component), sourceEvent, "name");
 	}
 	
 	@Test
-	public void validateDescriptionOverflowError() {
-		request = new Request();
-		
+	public void validateDescriptionOverflowError() {		
 		Component component = new Component();
 		component.setName(GenerateUtil.getRandomString(ConstanteUtil.SIZE_DEFAULT_NAME));
 		component.setDescription(GenerateUtil.getRandomString(ConstanteUtil.SIZE_OVERFLOW_DESCRIPTION));
-		screen.registerComponent(component);
 		
-		system.registerScreen(screen);
-		request.setSystem(system);
-		
-		VerifyUtil.verifyError(new ResponseError(new FieldSizeOverflowException(SourceEvent.COMPONENT, "description")),
-			register.doRegisterSystem(request));
+		VerifyUtil.verifyAndThrowsFieldSizeOverflowException(doRegisters(component), sourceEvent, "description");
 	}
 	
 	@Test
 	public void validateEventRequiredError() {
-		request = new Request();
-		
 		Component component = new Component();
 		component.setName(GenerateUtil.getRandomString(ConstanteUtil.SIZE_DEFAULT_NAME));
 		component.setDescription(GenerateUtil.getRandomString(ConstanteUtil.SIZE_DEFAULT_DESCRIPTION));
+		
+		VerifyUtil.verifyAndThrowsRequireResourceException(doRegisters(component), sourceEvent, msgErrorRequiredEvent);
+	}
+	
+	@Test
+	public void validateErrorEventNullValue() {
+		Component component = new Component();
+		component.setName(GenerateUtil.getRandomString(ConstanteUtil.SIZE_DEFAULT_NAME));
+		component.setDescription(GenerateUtil.getRandomString(ConstanteUtil.SIZE_DEFAULT_DESCRIPTION));
+		
+		Event event = null;
+		component.registerEvent(event);
+		
+		VerifyUtil.verifyAndThrowsRequireResourceException(doRegisters(component), sourceEvent, msgErrorEventNullValue);
+	}
+	
+	@Test
+	public void validateErrorAttributeNullValue() {
+		Component component = new Component();
+		component.setName(GenerateUtil.getRandomString(ConstanteUtil.SIZE_DEFAULT_NAME));
+		component.setDescription(GenerateUtil.getRandomString(ConstanteUtil.SIZE_DEFAULT_DESCRIPTION));
+		
+		component.registerEvent(new Event());
+		
+		Attribute attribute = null;
+		component.registerAttribute(attribute);
+		
+		VerifyUtil.verifyAndThrowsRequireResourceException(doRegisters(component), sourceEvent, msgErrorAttributeNullValue);
+	}
+	
+	private Request doRegisters(Component component) {
+		Request request = new Request();
+		
 		screen.registerComponent(component);
-		
 		system.registerScreen(screen);
-		request.setSystem(system);
 		
-		VerifyUtil.verifyError(new ResponseError(new ResourceRequiredException(SourceEvent.COMPONENT,
-				"No mínimo um evento deve estar associado ao componente.")),
-			register.doRegisterSystem(request));
+		request.setSystem(system);
+		return request;
 	}
 }

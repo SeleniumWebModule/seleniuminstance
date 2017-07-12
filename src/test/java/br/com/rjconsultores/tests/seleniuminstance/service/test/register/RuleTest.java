@@ -7,6 +7,7 @@ import br.com.rjconsultores.tests.seleniuminstance.enums.SourceEvent;
 import br.com.rjconsultores.tests.seleniuminstance.service.test.utilities.ConstanteUtil;
 import br.com.rjconsultores.tests.seleniuminstance.service.test.utilities.GenerateUtil;
 import br.com.rjconsultores.tests.seleniuminstance.service.test.utilities.VerifyUtil;
+import br.com.rjconsultores.tests.webmodule.seleniuminstance.entity.Attribute;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.entity.Component;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.entity.Event;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.entity.Rule;
@@ -20,6 +21,9 @@ public class RuleTest {
 	private Component component;
 	private Event event;
 	private SourceEvent sourceEvent;
+	
+	private String msgErrorAttributeRequired;
+	private String msgErrorAttributeNullValue;
 
 	@Before
 	public void init() {
@@ -41,6 +45,9 @@ public class RuleTest {
 		component.registerEvent(event);
 		
 		sourceEvent = SourceEvent.RULE;
+		
+		msgErrorAttributeRequired = "Um ou mais atributos deve estar associados à regra.";
+		msgErrorAttributeNullValue = "O atributo deve ser um valor válido e nulo não é um valor válido.";
 	}
 	
 	@Test
@@ -82,7 +89,18 @@ public class RuleTest {
 		Rule rule = new Rule();
 		rule.setName(GenerateUtil.getRandomString(ConstanteUtil.SIZE_DEFAULT_NAME));
 		rule.setDescription(GenerateUtil.getRandomString(ConstanteUtil.SIZE_DEFAULT_DESCRIPTION));
-		VerifyUtil.verifyAndThrowsResourceRequireException(doRegister(rule), sourceEvent, "Um ou mais atributos deve estar associados à regra.");		
+		VerifyUtil.verifyAndThrowsRequireResourceException(doRegister(rule), sourceEvent, msgErrorAttributeRequired);		
+	}
+	
+	@Test
+	public void validateAttributeWithNullValue() {		
+		Rule rule = new Rule();
+		rule.setName(GenerateUtil.getRandomString(ConstanteUtil.SIZE_DEFAULT_NAME));
+		rule.setDescription(GenerateUtil.getRandomString(ConstanteUtil.SIZE_DEFAULT_DESCRIPTION));
+		
+		Attribute attribute = null;
+		rule.registerAttribute(attribute);
+		VerifyUtil.verifyAndThrowsRequireResourceException(doRegister(rule), sourceEvent, msgErrorAttributeNullValue);		
 	}
 	
 	private Request doRegister(Rule rule) {

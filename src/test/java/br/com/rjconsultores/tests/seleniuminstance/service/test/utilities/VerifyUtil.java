@@ -5,7 +5,7 @@ import org.junit.Assert;
 import br.com.rjconsultores.tests.seleniuminstance.enums.SourceEvent;
 import br.com.rjconsultores.tests.seleniuminstance.exception.FieldRequireException;
 import br.com.rjconsultores.tests.seleniuminstance.exception.FieldSizeOverflowException;
-import br.com.rjconsultores.tests.seleniuminstance.exception.ResourceRequiredException;
+import br.com.rjconsultores.tests.seleniuminstance.exception.RequiredResourceException;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.service.Register;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.service.request.Request;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.service.response.Response;
@@ -17,7 +17,7 @@ public class VerifyUtil {
 		Assert.assertEquals(responseExpected.getStatusResponse(), responseActual.getStatusResponse());
 	}
 	
-	public static void verifyError(ResponseError responseExpected, Response responseActual) {
+	private static void verifyError(ResponseError responseExpected, Response responseActual) {
 		Assert.assertEquals(responseExpected.getClass(), 
 				responseActual.getClass());
 		
@@ -31,8 +31,8 @@ public class VerifyUtil {
 				responseActual.getInstanceException().getSourceEvent().getDescription());
 	}
 	
-	public static void verifyAndThrowsResourceRequireException(Request request, SourceEvent sourceEvent, String message) {
-		VerifyUtil.verifyError(new ResponseError(new ResourceRequiredException(sourceEvent, message)),
+	public static void verifyAndThrowsRequireResourceException(Request request, SourceEvent sourceEvent, String message) {
+		VerifyUtil.verifyError(new ResponseError(new RequiredResourceException(sourceEvent, message)),
 				new Register().doRegisterSystem(request));		
 	}
 	

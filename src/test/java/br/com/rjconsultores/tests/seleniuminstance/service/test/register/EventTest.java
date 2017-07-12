@@ -9,6 +9,7 @@ import br.com.rjconsultores.tests.seleniuminstance.service.test.utilities.Genera
 import br.com.rjconsultores.tests.seleniuminstance.service.test.utilities.VerifyUtil;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.entity.Component;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.entity.Event;
+import br.com.rjconsultores.tests.webmodule.seleniuminstance.entity.Rule;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.entity.Screen;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.entity.System;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.service.request.Request;
@@ -18,6 +19,9 @@ public class EventTest {
 	private Screen screen;
 	private Component component;
 	private SourceEvent sourceEvent;
+	
+	private String msgErrorRuleRequired;
+	private String msgErrorRuleNullValue;
 
 	@Before
 	public void init() {
@@ -34,6 +38,9 @@ public class EventTest {
 		component.setDescription(GenerateUtil.getRandomString(ConstanteUtil.SIZE_DEFAULT_DESCRIPTION));
 		
 		sourceEvent = SourceEvent.EVENT;
+		
+		msgErrorRuleRequired = "Uma ou mais regras devem estar associadas ao evento.";
+		msgErrorRuleNullValue = "A regra deve ser um valor válido e nulo não é um valor válido.";
 	}
 	
 	@Test
@@ -75,7 +82,19 @@ public class EventTest {
 		Event event = new Event();
 		event.setName(GenerateUtil.getRandomString(ConstanteUtil.SIZE_DEFAULT_NAME));
 		event.setDescription(GenerateUtil.getRandomString(ConstanteUtil.SIZE_DEFAULT_DESCRIPTION));
-		VerifyUtil.verifyAndThrowsResourceRequireException(doRegisters(event),sourceEvent, "No mínimo uma regra deve estar associada ao evento.");
+		VerifyUtil.verifyAndThrowsRequireResourceException(doRegisters(event), sourceEvent, msgErrorRuleRequired);
+	}
+	
+	@Test
+	public void validateRuleErrorNullValue() {		
+		Event event = new Event();
+		event.setName(GenerateUtil.getRandomString(ConstanteUtil.SIZE_DEFAULT_NAME));
+		event.setDescription(GenerateUtil.getRandomString(ConstanteUtil.SIZE_DEFAULT_DESCRIPTION));
+		
+		Rule rule = null;
+		event.registerRule(rule);
+		
+		VerifyUtil.verifyAndThrowsRequireResourceException(doRegisters(event), sourceEvent, msgErrorRuleNullValue);
 	}
 	
 	private Request doRegisters(Event event) {
