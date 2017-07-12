@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import br.com.rjconsultores.tests.seleniuminstance.enums.SourceEvent;
 import br.com.rjconsultores.tests.seleniuminstance.exception.FieldRequireException;
-import br.com.rjconsultores.tests.seleniuminstance.exception.FieldSizeOverflow;
+import br.com.rjconsultores.tests.seleniuminstance.exception.FieldSizeOverflowException;
 import br.com.rjconsultores.tests.seleniuminstance.exception.ResourceRequiredException;
 import br.com.rjconsultores.tests.seleniuminstance.service.test.utilities.ConstanteUtil;
 import br.com.rjconsultores.tests.seleniuminstance.service.test.utilities.GenerateUtil;
@@ -108,7 +108,7 @@ public class SystemTest {
 		system.setName(GenerateUtil.getRandomString(ConstanteUtil.SIZE_OVERFLOW_NAME));
 		request.setSystem(system);
 		
-		VerifyUtil.verifyError(new ResponseError(new FieldSizeOverflow(SourceEvent.SYSTEM, "name")),
+		VerifyUtil.verifyError(new ResponseError(new FieldSizeOverflowException(SourceEvent.SYSTEM, "name")),
 			register.doRegisterSystem(request));
 	}
 	
@@ -121,7 +121,7 @@ public class SystemTest {
 		system.setAddress(GenerateUtil.getRandomString(ConstanteUtil.SIZE_OVERFLOW_ADDRESS));
 		request.setSystem(system);
 		
-		VerifyUtil.verifyError(new ResponseError(new FieldSizeOverflow(SourceEvent.SYSTEM, "address")),
+		VerifyUtil.verifyError(new ResponseError(new FieldSizeOverflowException(SourceEvent.SYSTEM, "address")),
 			register.doRegisterSystem(request));
 	}
 	
@@ -135,7 +135,7 @@ public class SystemTest {
 		system.setPort(GenerateUtil.getRandomNumber(ConstanteUtil.SIZE_OVERFLOW_PORT));
 		request.setSystem(system);
 		
-		VerifyUtil.verifyError(new ResponseError(new FieldSizeOverflow(SourceEvent.SYSTEM, "port")),
+		VerifyUtil.verifyError(new ResponseError(new FieldSizeOverflowException(SourceEvent.SYSTEM, "port")),
 			register.doRegisterSystem(request));
 	}
 	

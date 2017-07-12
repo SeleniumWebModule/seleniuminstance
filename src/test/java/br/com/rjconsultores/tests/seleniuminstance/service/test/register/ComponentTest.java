@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import br.com.rjconsultores.tests.seleniuminstance.enums.SourceEvent;
 import br.com.rjconsultores.tests.seleniuminstance.exception.FieldRequireException;
-import br.com.rjconsultores.tests.seleniuminstance.exception.FieldSizeOverflow;
+import br.com.rjconsultores.tests.seleniuminstance.exception.FieldSizeOverflowException;
 import br.com.rjconsultores.tests.seleniuminstance.exception.ResourceRequiredException;
 import br.com.rjconsultores.tests.seleniuminstance.service.test.utilities.ConstanteUtil;
 import br.com.rjconsultores.tests.seleniuminstance.service.test.utilities.GenerateUtil;
@@ -89,7 +89,7 @@ public class ComponentTest {
 		system.registerScreen(screen);
 		request.setSystem(system);
 		
-		VerifyUtil.verifyError(new ResponseError(new FieldSizeOverflow(SourceEvent.COMPONENT, "name")),
+		VerifyUtil.verifyError(new ResponseError(new FieldSizeOverflowException(SourceEvent.COMPONENT, "name")),
 			register.doRegisterSystem(request));
 	}
 	
@@ -105,7 +105,7 @@ public class ComponentTest {
 		system.registerScreen(screen);
 		request.setSystem(system);
 		
-		VerifyUtil.verifyError(new ResponseError(new FieldSizeOverflow(SourceEvent.COMPONENT, "description")),
+		VerifyUtil.verifyError(new ResponseError(new FieldSizeOverflowException(SourceEvent.COMPONENT, "description")),
 			register.doRegisterSystem(request));
 	}
 	

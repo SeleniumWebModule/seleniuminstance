@@ -6,6 +6,7 @@ import java.util.LinkedHashSet;
 import br.com.rjconsultores.tests.seleniuminstance.enums.SourceEvent;
 import br.com.rjconsultores.tests.seleniuminstance.exception.ResourceRequiredException;
 import br.com.rjconsultores.tests.seleniuminstance.exception.SeleniumInstanceException;
+import br.com.rjconsultores.tests.seleniuminstance.util.ValidateUtil;
 
 public class Event implements Entity{
 	private String name;
@@ -46,8 +47,15 @@ public class Event implements Entity{
 
 	@Override
 	public void validate() throws SeleniumInstanceException {
+		ValidateUtil.validateField(sourceEvent, "name", getName(), 30);
+		ValidateUtil.validateField(sourceEvent, "description", getDescription(), 400);
+		
 		if (listRules() == null || listRules().isEmpty()) {
 			throw new ResourceRequiredException(sourceEvent, "No mínimo uma regra deve estar associada ao evento.");
+		}
+		
+		for (Rule rule: listRules()) {
+			rule.validate();
 		}
 	}
 }

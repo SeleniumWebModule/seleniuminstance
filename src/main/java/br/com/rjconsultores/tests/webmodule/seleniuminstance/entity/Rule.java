@@ -4,7 +4,9 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 
 import br.com.rjconsultores.tests.seleniuminstance.enums.SourceEvent;
+import br.com.rjconsultores.tests.seleniuminstance.exception.ResourceRequiredException;
 import br.com.rjconsultores.tests.seleniuminstance.exception.SeleniumInstanceException;
+import br.com.rjconsultores.tests.seleniuminstance.util.ValidateUtil;
 
 public class Rule implements Entity{
 	private String name;
@@ -45,7 +47,15 @@ public class Rule implements Entity{
 
 	@Override
 	public void validate() throws SeleniumInstanceException {
-		// TODO Auto-generated method stub
+		ValidateUtil.validateField(sourceEvent, "name", getName(), 30);
+		ValidateUtil.validateField(sourceEvent, "description", getDescription(), 400);
+
+		if (listAttributes() == null || listAttributes().isEmpty()) {
+			throw new ResourceRequiredException(sourceEvent, "Um ou mais atributos deve estar associados à regra.");
+		}
 		
+		for (Attribute attribute: listAttributes()) {
+			attribute.validate();
+		}
 	}
 }

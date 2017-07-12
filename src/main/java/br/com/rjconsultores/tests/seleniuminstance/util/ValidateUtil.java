@@ -2,7 +2,7 @@ package br.com.rjconsultores.tests.seleniuminstance.util;
 
 import br.com.rjconsultores.tests.seleniuminstance.enums.SourceEvent;
 import br.com.rjconsultores.tests.seleniuminstance.exception.FieldRequireException;
-import br.com.rjconsultores.tests.seleniuminstance.exception.FieldSizeOverflow;
+import br.com.rjconsultores.tests.seleniuminstance.exception.FieldSizeOverflowException;
 import br.com.rjconsultores.tests.seleniuminstance.exception.SeleniumInstanceException;
 
 public class ValidateUtil {
@@ -19,9 +19,9 @@ public class ValidateUtil {
 		}
 	}
 
-	private static void validateSizeOverflow(SourceEvent sourceEvent, String fieldName, String fieldValue, int maxLength) throws FieldSizeOverflow {
+	private static void validateSizeOverflow(SourceEvent sourceEvent, String fieldName, String fieldValue, int maxLength) throws FieldSizeOverflowException {
 		if (fieldValue.length() > maxLength) {
-			throw new FieldSizeOverflow(sourceEvent, fieldName);
+			throw new FieldSizeOverflowException(sourceEvent, fieldName);
 		}
 	}
 	

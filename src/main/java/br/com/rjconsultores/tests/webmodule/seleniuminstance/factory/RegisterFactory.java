@@ -13,7 +13,7 @@ public class RegisterFactory {
 	private SourceEvent sourceEvent;
 	
 	RegisterFactory() {
-		sourceEvent = SourceEvent.REGISTER;
+		sourceEvent = SourceEvent.REGISTER_SERVICE;
 	}
 	
 

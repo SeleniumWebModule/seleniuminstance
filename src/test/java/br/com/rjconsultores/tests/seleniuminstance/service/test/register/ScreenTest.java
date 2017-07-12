@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import br.com.rjconsultores.tests.seleniuminstance.enums.SourceEvent;
 import br.com.rjconsultores.tests.seleniuminstance.exception.FieldRequireException;
-import br.com.rjconsultores.tests.seleniuminstance.exception.FieldSizeOverflow;
+import br.com.rjconsultores.tests.seleniuminstance.exception.FieldSizeOverflowException;
 import br.com.rjconsultores.tests.seleniuminstance.exception.ResourceRequiredException;
 import br.com.rjconsultores.tests.seleniuminstance.service.test.utilities.ConstanteUtil;
 import br.com.rjconsultores.tests.seleniuminstance.service.test.utilities.GenerateUtil;
@@ -59,7 +59,7 @@ public class ScreenTest {
 		system.registerScreen(screen);
 		request.setSystem(system);
 		
-		VerifyUtil.verifyError(new ResponseError(new FieldSizeOverflow(SourceEvent.SCREEN, "name")),
+		VerifyUtil.verifyError(new ResponseError(new FieldSizeOverflowException(SourceEvent.SCREEN, "name")),
 			register.doRegisterSystem(request));
 	}
 	
