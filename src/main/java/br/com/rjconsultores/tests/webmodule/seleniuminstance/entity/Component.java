@@ -4,13 +4,17 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 
 import br.com.rjconsultores.tests.seleniuminstance.enums.SourceEvent;
-import br.com.rjconsultores.tests.seleniuminstance.exception.ResourceRequiredException;
+import br.com.rjconsultores.tests.seleniuminstance.exception.RequiredResourceException;
 import br.com.rjconsultores.tests.seleniuminstance.exception.SeleniumInstanceException;
 import br.com.rjconsultores.tests.seleniuminstance.util.ValidateUtil;
 
 public class Component implements Entity{
 	private String name;
 	private String description;
+	
+	private String msgErrorRequiredEvent;
+	private String msgErrorEventNullValue;
+	private String msgErrorAttributeNullValue;
 
 	private Collection<Attribute> attributes;
 	private Collection<Event> events;
@@ -20,7 +24,12 @@ public class Component implements Entity{
 	public Component() {
 		attributes = new LinkedHashSet<>();
 		events = new LinkedHashSet<>();
+		
 		sourceEvent = SourceEvent.COMPONENT;
+		
+		msgErrorRequiredEvent = "Um ou mais eventos devem estar associados ao componente";
+		msgErrorEventNullValue = "O evento deve ser um valor válido e nulo não é um valor válido.";
+		msgErrorAttributeNullValue = "O atributo deve ser um valor válido e nulo não é um valor válido.";
 	}
 	
 	public String getName() {
@@ -61,15 +70,24 @@ public class Component implements Entity{
 		ValidateUtil.validateField(sourceEvent, "description", getDescription(), 400);
 		
 		if (listEvents() == null || listEvents().isEmpty()) {
-			throw new ResourceRequiredException(sourceEvent, "No mínimo um evento deve estar associado ao componente.");
-		}
-		
-		for (Event event: listEvents()) {
-			event.validate();
+			throw new RequiredResourceException(sourceEvent, msgErrorRequiredEvent);
 		}
 		
 		for (Attribute attribute: listAttributes()) {
+			if (attribute == null) {
+				throw new RequiredResourceException(sourceEvent, msgErrorAttributeNullValue);
+			}
+			
 			attribute.validate();
 		}
+		
+		for (Event event: listEvents()) {
+			if (event == null) {
+				throw new RequiredResourceException(sourceEvent, msgErrorEventNullValue);
+			}
+			
+			event.validate();
+		}
+		
 	}
 }

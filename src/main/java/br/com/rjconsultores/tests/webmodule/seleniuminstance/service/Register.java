@@ -9,7 +9,7 @@ import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
 import br.com.rjconsultores.tests.seleniuminstance.enums.SourceEvent;
-import br.com.rjconsultores.tests.seleniuminstance.exception.ResourceRequiredException;
+import br.com.rjconsultores.tests.seleniuminstance.exception.RequiredResourceException;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.factory.RegisterFactory;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.service.request.Request;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.service.response.Response;
@@ -27,7 +27,7 @@ public class Register {
 	public Response doRegisterSystem(Request request) {
 		
 		if (request == null) {
-			return new ResponseError(new ResourceRequiredException(SourceEvent.REGISTER_SERVICE, "A requisição não pode ter um valor null. "
+			return new ResponseError(new RequiredResourceException(SourceEvent.REGISTER_SERVICE, "A requisição não pode ter um valor null. "
 					+ "Você deve passar um sistema com suas telas e componentes."));
 		}
 		

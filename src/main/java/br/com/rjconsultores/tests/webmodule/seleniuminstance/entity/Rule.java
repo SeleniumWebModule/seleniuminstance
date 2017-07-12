@@ -4,13 +4,15 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 
 import br.com.rjconsultores.tests.seleniuminstance.enums.SourceEvent;
-import br.com.rjconsultores.tests.seleniuminstance.exception.ResourceRequiredException;
+import br.com.rjconsultores.tests.seleniuminstance.exception.RequiredResourceException;
 import br.com.rjconsultores.tests.seleniuminstance.exception.SeleniumInstanceException;
 import br.com.rjconsultores.tests.seleniuminstance.util.ValidateUtil;
 
 public class Rule implements Entity{
 	private String name;
 	private String description;
+	private String msgErrorAttributeRequireError;
+	private String msgErrorAttributeNullValue;
 	
 	private Collection<Attribute> attributes;
 	
@@ -19,6 +21,9 @@ public class Rule implements Entity{
 	public Rule() {
 		attributes = new LinkedHashSet<>();
 		sourceEvent = SourceEvent.RULE;
+		
+		msgErrorAttributeRequireError = "Um ou mais atributos deve estar associados à regra.";
+		msgErrorAttributeNullValue = "O atributo deve ser um valor válido e nulo não é um valor válido.";
 	}
 
 	public String getName() {
@@ -51,10 +56,14 @@ public class Rule implements Entity{
 		ValidateUtil.validateField(sourceEvent, "description", getDescription(), 400);
 
 		if (listAttributes() == null || listAttributes().isEmpty()) {
-			throw new ResourceRequiredException(sourceEvent, "Um ou mais atributos deve estar associados à regra.");
+			throw new RequiredResourceException(sourceEvent, msgErrorAttributeRequireError);
 		}
 		
 		for (Attribute attribute: listAttributes()) {
+			if (attribute == null) {
+				throw new RequiredResourceException(sourceEvent, msgErrorAttributeNullValue);
+			}
+			
 			attribute.validate();
 		}
 	}

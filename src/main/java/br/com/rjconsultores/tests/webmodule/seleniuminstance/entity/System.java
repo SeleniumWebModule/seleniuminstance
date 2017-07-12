@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 
 import br.com.rjconsultores.tests.seleniuminstance.enums.SourceEvent;
-import br.com.rjconsultores.tests.seleniuminstance.exception.ResourceRequiredException;
+import br.com.rjconsultores.tests.seleniuminstance.exception.RequiredResourceException;
 import br.com.rjconsultores.tests.seleniuminstance.exception.SeleniumInstanceException;
 import br.com.rjconsultores.tests.seleniuminstance.util.ValidateUtil;
 
@@ -13,6 +13,9 @@ public class System implements Entity{
 	private String address;
 	private String port;
 	
+	private String msgErrorScreenRequired;
+	private String msgErrorScreenNullValue;
+	
 	private SourceEvent sourceEvent;
 	
 	private Collection<Screen> screens;
@@ -20,6 +23,9 @@ public class System implements Entity{
 	public System() {
 		screens = new LinkedHashSet<>();
 		sourceEvent = SourceEvent.SYSTEM;
+		
+		msgErrorScreenRequired = "Uma ou mais telas devem estar associadas ao sistema.";
+		msgErrorScreenNullValue = "A tela deve ser um valor válido e nulo não é um valor válido.";
 	}
 	
 	public String getName() {
@@ -56,17 +62,20 @@ public class System implements Entity{
 
 	@Override
 	public void validate() throws SeleniumInstanceException {
+		
+		
+		
 		ValidateUtil.validateField(sourceEvent, "name", getName(), 80);
 		ValidateUtil.validateField(sourceEvent, "address", getAddress(), 30);
 		ValidateUtil.validateField(sourceEvent, "port", getPort(), 4);
 		
 		if (listScreens() == null || listScreens().isEmpty()) {
-			throw new ResourceRequiredException(sourceEvent, "No mínimo uma tela deve estar associada ao sistema.");
+			throw new RequiredResourceException(sourceEvent, msgErrorScreenRequired);
 		}
 		
 		for (Screen screen: listScreens()) {
 			if (screen == null) {
-				throw new ResourceRequiredException(sourceEvent, "Uma tela é esperada como parametro para o sistema, foi encontrado null.");
+				throw new RequiredResourceException(sourceEvent, msgErrorScreenNullValue);
 			}
 			
 			screen.validate();

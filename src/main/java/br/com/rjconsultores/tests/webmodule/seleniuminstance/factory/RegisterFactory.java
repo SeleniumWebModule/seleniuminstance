@@ -1,7 +1,7 @@
 package br.com.rjconsultores.tests.webmodule.seleniuminstance.factory;
 
 import br.com.rjconsultores.tests.seleniuminstance.enums.SourceEvent;
-import br.com.rjconsultores.tests.seleniuminstance.exception.ResourceRequiredException;
+import br.com.rjconsultores.tests.seleniuminstance.exception.RequiredResourceException;
 import br.com.rjconsultores.tests.seleniuminstance.exception.SeleniumInstanceException;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.entity.System;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.service.request.Request;
@@ -29,7 +29,7 @@ public class RegisterFactory {
 		try {
 			System systemRequest = request.getSystem();
 			if (systemRequest == null) {
-				return new ResponseError(new ResourceRequiredException(sourceEvent,
+				return new ResponseError(new RequiredResourceException(sourceEvent,
 						"É necessário informar um sistema."));
 			}
 			

@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 
 import br.com.rjconsultores.tests.seleniuminstance.enums.SourceEvent;
-import br.com.rjconsultores.tests.seleniuminstance.exception.ResourceRequiredException;
+import br.com.rjconsultores.tests.seleniuminstance.exception.RequiredResourceException;
 import br.com.rjconsultores.tests.seleniuminstance.exception.SeleniumInstanceException;
 import br.com.rjconsultores.tests.seleniuminstance.util.ValidateUtil;
 
@@ -17,6 +17,12 @@ public class Screen implements Entity {
 	private Collection<Component> components;
 	private Collection<Event> events;
 	
+	private String msgErrorComponentRequired;
+	private String msgErrorAttributeNullValue;
+	private String msgErrorEventNullValue;
+	
+	private final int SIZE_FIELD_NAME = 80; 
+	
 	
 	public Screen() {
 		attributes = new LinkedHashSet<>();
@@ -24,6 +30,10 @@ public class Screen implements Entity {
 		events = new LinkedHashSet<>();
 		
 		sourceEvent = SourceEvent.SCREEN;
+		
+		msgErrorComponentRequired = "Um ou mais componentes devem estar associados à tela.";
+		msgErrorAttributeNullValue = "O atributo deve ser um valor válido e nulo não é um valor válido.";
+		msgErrorEventNullValue = "O evento deve ser um valor válido e nulo não é um valor válido.";
 	}
 	
 	public String getName() {
@@ -60,25 +70,34 @@ public class Screen implements Entity {
 
 	@Override
 	public void validate() throws SeleniumInstanceException {
-		ValidateUtil.validateField(sourceEvent, "name", getName(), 80);
+		ValidateUtil.validateField(sourceEvent, "name", getName(), SIZE_FIELD_NAME);
 		
 		if (components == null || components.isEmpty()) {
-			throw new ResourceRequiredException(sourceEvent, "No mínimo um componente deve estar associado à tela.");
+			throw new RequiredResourceException(sourceEvent, msgErrorComponentRequired);
 		}
 		
 		for (Attribute attribute: listAttributes()) {
+			if (attribute == null) {
+				throw new RequiredResourceException(sourceEvent, msgErrorAttributeNullValue);
+			}
+			
 			attribute.validate();
 		}
 		
 		for (Event event: listEvents()) {
+			if (event == null) {
+				throw new RequiredResourceException(sourceEvent, msgErrorEventNullValue);
+			}
+			
 			event.validate();
 		}
 		
 		for (Component component: listComponents()) {
+			if (component == null) {
+				throw new RequiredResourceException(sourceEvent, msgErrorComponentRequired);
+			}
+			
 			component.validate();
 		}
-		
-		
 	}
-
 }
