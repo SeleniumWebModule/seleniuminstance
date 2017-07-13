@@ -8,22 +8,18 @@ public class SeleniumInstanceException extends Exception {
 	
 	private String message;
 	private SourceEvent sourceEvent;
-	private StackTraceElement stackException;
-
+	
 	public SeleniumInstanceException(SourceEvent sourceEvent, String message) {
 		this.sourceEvent = sourceEvent;
 		this.message = message;
 	}
-	
+
+	@Override
 	public String getMessage() {
 		return message;
 	}
 	
 	public SourceEvent getSourceEvent() {
 		return sourceEvent;
-	}
-
-	public StackTraceElement getStackException() {
-		return stackException;
 	}
 }

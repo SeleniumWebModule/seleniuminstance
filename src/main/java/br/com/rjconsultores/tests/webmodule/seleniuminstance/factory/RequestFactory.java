@@ -7,8 +7,6 @@ import br.com.rjconsultores.tests.webmodule.seleniuminstance.entity.System;
 public class RequestFactory {
 	private static RequestFactory INSTANCE;
 	
-	public RequestFactory() {};
-	
 	public static RequestFactory INSTANCE() {
 		if (INSTANCE == null) {
 			INSTANCE = new RequestFactory();
