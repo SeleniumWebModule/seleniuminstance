@@ -7,7 +7,8 @@ public enum SourceEvent {
 	EVENT("Evento"),
 	RULE("Regra"),
 	ATTRIBUTE("Atributo"),
-	REGISTER_SERVICE("Cadastro");
+	REGISTER_SERVICE("Cadastro"),
+	REGISTER_FACTORY("Register Factory");
 	
 	private String description;
 	

@@ -17,7 +17,7 @@ public class VerifyUtil {
 		Assert.assertEquals(responseExpected.getStatusResponse(), responseActual.getStatusResponse());
 	}
 	
-	private static void verifyError(ResponseError responseExpected, Response responseActual) {
+	public static void verifyError(ResponseError responseExpected, Response responseActual) {
 		Assert.assertEquals(responseExpected.getClass(), 
 				responseActual.getClass());
 		

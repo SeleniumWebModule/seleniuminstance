@@ -12,8 +12,14 @@ public class RegisterFactory {
 	private static RegisterFactory INSTANCE;
 	private SourceEvent sourceEvent;
 	
+	private String msgErrorRequestNullValue;
+	private String msgErrorSystemNullValue;
+	
 	RegisterFactory() {
 		sourceEvent = SourceEvent.REGISTER_SERVICE;
+		
+		msgErrorRequestNullValue = "O request deve ser um valor válido e nulo não é um valor válido.";
+		msgErrorSystemNullValue = "O sistema deve ser um valor válido e nulo não é um valor válido.";
 	}
 	
 
@@ -27,10 +33,13 @@ public class RegisterFactory {
 
 	public Response registerScreen(Request request) {
 		try {
+			if (request == null) {
+				return new ResponseError(new RequiredResourceException(sourceEvent, msgErrorRequestNullValue));
+			}
+			
 			System systemRequest = request.getSystem();
 			if (systemRequest == null) {
-				return new ResponseError(new RequiredResourceException(sourceEvent,
-						"É necessário informar um sistema."));
+				return new ResponseError(new RequiredResourceException(sourceEvent, msgErrorSystemNullValue));
 			}
 			
 			systemRequest.validate();
