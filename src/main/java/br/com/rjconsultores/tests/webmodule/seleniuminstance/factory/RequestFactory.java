@@ -16,6 +16,6 @@ public class RequestFactory {
 	}
 	
 	public Collection<System> requestSystems() {
-		return InstanceFactory.INSTANCE().getSystems();
+		return DBFactory.INSTANCE().getSystems();
 	}
 }

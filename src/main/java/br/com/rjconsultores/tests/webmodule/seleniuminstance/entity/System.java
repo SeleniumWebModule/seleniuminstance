@@ -8,46 +8,47 @@ import br.com.rjconsultores.tests.seleniuminstance.exception.RequiredResourceExc
 import br.com.rjconsultores.tests.seleniuminstance.exception.SeleniumInstanceException;
 import br.com.rjconsultores.tests.seleniuminstance.util.ValidateUtil;
 
-public class System implements Entity{
+public class System implements Entity {
+	private Integer id;
 	private String name;
 	private String address;
 	private String port;
-	
+
 	private String msgErrorScreenRequired;
 	private String msgErrorScreenNullValue;
-	
+
 	private SourceEvent sourceEvent;
-	
+
 	private Collection<Screen> screens;
-	
+
 	public System() {
 		screens = new LinkedHashSet<>();
 		sourceEvent = SourceEvent.SYSTEM;
-		
+
 		msgErrorScreenRequired = "Uma ou mais telas devem estar associadas ao sistema.";
 		msgErrorScreenNullValue = "A tela deve ser um valor válido e nulo não é um valor válido.";
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public String getAddress() {
 		return address;
 	}
-	
+
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	
+
 	public String getPort() {
 		return port;
 	}
-	
+
 	public void setPort(String port) {
 		this.port = port;
 	}
@@ -55,30 +56,36 @@ public class System implements Entity{
 	public void registerScreen(Screen screen) {
 		this.screens.add(screen);
 	}
-	
+
 	public Collection<Screen> listScreens() {
 		return screens;
 	}
 
+	public Integer getId() {
+		return id;
+	}
+	
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
 	@Override
 	public void validate() throws SeleniumInstanceException {
-		
-		
-		
 		ValidateUtil.validateField(sourceEvent, "name", getName(), 80);
 		ValidateUtil.validateField(sourceEvent, "address", getAddress(), 30);
 		ValidateUtil.validateField(sourceEvent, "port", getPort(), 4);
-		
+
 		if (listScreens() == null || listScreens().isEmpty()) {
 			throw new RequiredResourceException(sourceEvent, msgErrorScreenRequired);
 		}
-		
-		for (Screen screen: listScreens()) {
+
+		for (Screen screen : listScreens()) {
 			if (screen == null) {
 				throw new RequiredResourceException(sourceEvent, msgErrorScreenNullValue);
 			}
-			
+
 			screen.validate();
 		}
 	}
+
 }
