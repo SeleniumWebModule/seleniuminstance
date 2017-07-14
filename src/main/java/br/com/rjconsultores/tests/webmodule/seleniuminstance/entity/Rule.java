@@ -8,7 +8,9 @@ import br.com.rjconsultores.tests.seleniuminstance.exception.RequiredResourceExc
 import br.com.rjconsultores.tests.seleniuminstance.exception.SeleniumInstanceException;
 import br.com.rjconsultores.tests.seleniuminstance.util.ValidateUtil;
 
-public class Rule implements Entity{
+public class Rule implements Entity {
+	private String id;
+	private String parentId;
 	private String name;
 	private String description;
 	private String msgErrorAttributeRequireError;
@@ -24,6 +26,22 @@ public class Rule implements Entity{
 		
 		msgErrorAttributeRequireError = "Um ou mais atributos deve estar associados à regra.";
 		msgErrorAttributeNullValue = "O atributo deve ser um valor válido e nulo não é um valor válido.";
+	}
+	
+	public String getId() {
+		return id;
+	}
+	
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+	public String getParentId() {
+		return parentId;
+	}
+	
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
 	}
 
 	public String getName() {
@@ -66,5 +84,13 @@ public class Rule implements Entity{
 			
 			attribute.validate();
 		}
+	}
+	
+	@Override
+	public void generateIdsForChildrens() {
+		Collection<Entity> entitiesAttributes = new LinkedHashSet<>();
+		
+		entitiesAttributes.addAll(listAttributes());
+		generateIdForEntity(entitiesAttributes);		
 	}
 }

@@ -9,6 +9,8 @@ import br.com.rjconsultores.tests.seleniuminstance.exception.SeleniumInstanceExc
 import br.com.rjconsultores.tests.seleniuminstance.util.ValidateUtil;
 
 public class Event implements Entity{
+	private String id;
+	private String parentId;
 	private String name;
 	private String description;
 	
@@ -28,6 +30,22 @@ public class Event implements Entity{
 		
 		msgErrorRuleRequired = "Uma ou mais regras devem estar associadas ao evento.";
 		msgErrorRuleNullValue = "A regra deve ser um valor válido e nulo não é um valor válido.";
+	}
+	
+	public String getId() {
+		return id;
+	}
+	
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+	public String getParentId() {
+		return parentId;
+	}
+	
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
 	}
 	
 	public String getName() {
@@ -70,5 +88,13 @@ public class Event implements Entity{
 			
 			rule.validate();
 		}
+	}
+	
+	@Override
+	public void generateIdsForChildrens() {
+		Collection<Entity> entitiesAttributes = new LinkedHashSet<>();
+		
+		entitiesAttributes.addAll(listRules());
+		generateIdForEntity(entitiesAttributes);		
 	}
 }

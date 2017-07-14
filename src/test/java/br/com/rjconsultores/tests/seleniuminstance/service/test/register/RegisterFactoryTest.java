@@ -20,6 +20,7 @@ import br.com.rjconsultores.tests.webmodule.seleniuminstance.factory.RegisterFac
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.service.request.Request;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.service.response.Response;
 import br.com.rjconsultores.tests.webmodule.seleniuminstance.service.response.ResponseError;
+import br.com.rjconsultores.tests.webmodule.seleniuminstance.service.response.StatusResponse;
 
 public class RegisterFactoryTest {
 	private System system;
@@ -99,11 +100,183 @@ public class RegisterFactoryTest {
 	}
 	
 	@Test
-	public void validateSuccessRequestForOperationTypeInsert() {
+	public void validateSystemIdForInsert() {
+		Request request = doRegisters();
+		request.setOperationType(OperationType.INSERT);
+
+		RegisterFactory.INSTANCE().registerScreen(request);
+		VerifyUtil.verifyId(system.getId());
+	}
+	
+	@Test
+	public void validateChildrensSystemIdsForInsert() {		
+		Request request = doRegisters();
+		request.setOperationType(OperationType.INSERT);
+
+		RegisterFactory.INSTANCE().registerScreen(request).getSystem().listScreens().forEach(screen -> {
+			VerifyUtil.verifyId(screen.getId());
+			Assert.assertEquals(system.getId(), screen.getParentId());			
+		});
+	}
+	
+	@Test
+	public void validateChildrensIdsScreenForInsert() {
 		Request request = doRegisters();
 		request.setOperationType(OperationType.INSERT);
 		
-		VerifyUtil.verifySuccess(new Response(), RegisterFactory.INSTANCE().registerScreen(request));
+		RegisterFactory.INSTANCE().registerScreen(request).getSystem().listScreens()
+			.forEach(screen -> screen.listComponents().forEach(component -> {
+				VerifyUtil.verifyId(component.getId());
+				Assert.assertEquals(screen.getId(), component.getParentId());
+			}));
+		
+		RegisterFactory.INSTANCE().registerScreen(request).getSystem().listScreens()
+			.forEach(screen -> screen.listEvents().forEach(event -> {
+				VerifyUtil.verifyId(event.getId());
+				Assert.assertEquals(screen.getId(), event.getParentId());
+			}));
+		
+		RegisterFactory.INSTANCE().registerScreen(request).getSystem().listScreens()
+			.forEach(screen -> screen.listAttributes().forEach(attribute -> {
+				VerifyUtil.verifyId(attribute.getId());
+				Assert.assertEquals(screen.getId(), attribute.getParentId());
+			}));
+	}
+	
+	@Test
+	public void validateChildrensIdsComponentForInsert() {
+		Request request = doRegisters();
+		request.setOperationType(OperationType.INSERT);
+		
+		RegisterFactory.INSTANCE().registerScreen(request).getSystem().listScreens()
+			.forEach(screen -> screen.listComponents().forEach(component ->  
+				component.listAttributes().forEach(atribute -> { 
+					VerifyUtil.verifyId(attribute.getId());
+					Assert.assertEquals(component.getId(), attribute.getParentId());
+				})
+			));
+		
+		RegisterFactory.INSTANCE().registerScreen(request).getSystem().listScreens()
+			.forEach(screen -> screen.listComponents().forEach(component ->  
+				component.listEvents().forEach(event -> {
+					VerifyUtil.verifyId(event.getId());
+					Assert.assertEquals(component.getId(), event.getParentId());
+				})
+			));
+	}
+	
+	@Test
+	public void validateChildrensIdsEventForInsert() {
+		Request request = doRegisters();
+		request.setOperationType(OperationType.INSERT);
+		
+		RegisterFactory.INSTANCE().registerScreen(request).getSystem().listScreens()
+			.forEach(screen -> screen.listComponents().forEach(component -> 
+				component.listEvents().forEach(event -> event.listRules().forEach(rule -> {
+					VerifyUtil.verifyId(rule.getId());
+					Assert.assertEquals(event.getId(), rule.getParentId());
+				})
+			)
+		));
+	}
+	
+	@Test
+	public void validateChildrensIdsRuleForInsert() {
+		Request request = doRegisters();
+		request.setOperationType(OperationType.INSERT);
+		
+		RegisterFactory.INSTANCE().registerScreen(request).getSystem().listScreens()
+			.forEach(screen -> screen.listComponents().forEach(component -> 
+				component.listEvents().forEach(event -> event.listRules().forEach(rule -> 
+					rule.listAttributes().forEach(attribute -> {
+						VerifyUtil.verifyId(attribute.getId());
+						Assert.assertEquals(rule.getId(), attribute.getParentId());						
+					})
+				))
+			));
+	}
+	
+	@Test
+	public void validateSuccessforInsertValidatingResponseSystem() {
+		Request request = doRegisters();
+		request.setOperationType(OperationType.INSERT);
+		
+		Response response = RegisterFactory.INSTANCE().registerScreen(request);
+		
+		Assert.assertEquals(StatusResponse.SUCCESS, response.getStatusResponse());
+		Assert.assertEquals(null, response.getInstanceException());
+		Assert.assertNotEquals(null, response.getSystem());
+		Assert.assertNotEquals(null, response.getSystem().getId());
+		Assert.assertNotEquals("", response.getSystem().getId());
+		Assert.assertNotEquals(null, response.getSystem().listScreens());
+		Assert.assertNotEquals(0, response.getSystem().listScreens().size());
+		Assert.assertNotEquals(null, response.getSystem().listScreens());
+		Assert.assertNotEquals(0, response.getSystem().listScreens().size());
+	}
+	
+	@Test
+	public void validateSuccessforInsertValidatingResponseScreen() {
+		Request request = doRegisters();
+		request.setOperationType(OperationType.INSERT);
+		
+		RegisterFactory.INSTANCE().registerScreen(request).getSystem().listScreens().forEach(screen -> {
+			Assert.assertNotEquals(null, screen.getId());
+			Assert.assertNotEquals("", screen.getId());
+			Assert.assertNotEquals(null, screen.listComponents());
+			Assert.assertNotEquals(0, screen.listComponents().size());
+		});
+	}
+	
+	@Test
+	public void validateSuccessforInsertValidatingResponseComponents() {
+		Request request = doRegisters();
+		request.setOperationType(OperationType.INSERT);
+		
+		RegisterFactory.INSTANCE().registerScreen(request).getSystem().listScreens().forEach (
+				screen -> screen.listComponents().forEach(component -> {
+					Assert.assertNotEquals(null, component.getId());
+					Assert.assertNotEquals("", component.getId());
+					Assert.assertNotEquals("", component.getParentId());
+					Assert.assertNotEquals(null, component.getParentId());
+					Assert.assertNotEquals(null, component.listEvents());
+					Assert.assertNotEquals(0, component.listEvents().size());
+				})
+			);	
+	}
+	
+	@Test
+	public void validateSuccessforInsertValidatingResponseRules() {
+		Request request = doRegisters();
+		request.setOperationType(OperationType.INSERT);
+		
+		RegisterFactory.INSTANCE().registerScreen(request).getSystem().listScreens()
+			.forEach(screen -> screen.listComponents().forEach(component -> 
+				component.listEvents().forEach(event -> event.listRules().forEach(rule -> {
+					Assert.assertNotEquals(null, rule.getId());
+					Assert.assertNotEquals("", rule.getId());
+					Assert.assertNotEquals("", rule.getParentId());
+					Assert.assertNotEquals(null, rule.getParentId());
+					Assert.assertNotEquals(null, rule.listAttributes());
+					Assert.assertNotEquals(0, rule.listAttributes().size());
+				}))
+			));
+	}
+	
+	@Test
+	public void validateSuccessforInsertValidatingResponseAttributes() {
+		Request request = doRegisters();
+		request.setOperationType(OperationType.INSERT);
+		
+		RegisterFactory.INSTANCE().registerScreen(request).getSystem().listScreens()
+			.forEach(screen -> screen.listComponents().forEach(component -> component.listEvents().forEach(event -> event.listRules()
+					.forEach(rule -> rule.listAttributes().forEach(attribute -> {
+						Assert.assertNotEquals(null, attribute.getId());
+						Assert.assertNotEquals("", attribute.getId());
+						Assert.assertNotEquals("", attribute.getParentId());
+						Assert.assertNotEquals(null, attribute.getParentId());
+					})
+				))
+			));
 	}
 	
 	private Request doRegisters() {

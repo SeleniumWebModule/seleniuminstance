@@ -53,10 +53,7 @@ public class RegisterFactory {
 			
 			if (request.getOperationType().equals(OperationType.INSERT)) {
 				return doRegister(systemRequest);
-			} else if (request.getOperationType().equals(OperationType.INSERT)) {
-				return doRegister(systemRequest);
 			}
-			
 		} catch (SeleniumInstanceException instanceException) {
 			return new ResponseError(instanceException);
 		}

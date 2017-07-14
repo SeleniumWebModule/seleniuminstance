@@ -9,6 +9,8 @@ import br.com.rjconsultores.tests.seleniuminstance.exception.SeleniumInstanceExc
 import br.com.rjconsultores.tests.seleniuminstance.util.ValidateUtil;
 
 public class Screen implements Entity {
+	private String id;
+	private String parentId;
 	private String name;
 	
 	private SourceEvent sourceEvent;
@@ -34,6 +36,25 @@ public class Screen implements Entity {
 		msgErrorComponentRequired = "Um ou mais componentes devem estar associados à tela.";
 		msgErrorAttributeNullValue = "O atributo deve ser um valor válido e nulo não é um valor válido.";
 		msgErrorEventNullValue = "O evento deve ser um valor válido e nulo não é um valor válido.";
+	}
+	
+	@Override
+	public String getId() {
+		return id;
+	}
+	
+	@Override
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+	public String getParentId() {
+		return parentId;
+	}
+	
+	@Override
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
 	}
 	
 	public String getName() {
@@ -99,5 +120,20 @@ public class Screen implements Entity {
 			
 			component.validate();
 		}
+	}
+
+	@Override
+	public void generateIdsForChildrens() {
+		Collection<Entity> entitiesComponents = new LinkedHashSet<>();
+		Collection<Entity> entitiesEvents = new LinkedHashSet<>();
+		Collection<Entity> entitiesAttributes = new LinkedHashSet<>();
+		
+		entitiesComponents.addAll(listComponents());
+		entitiesEvents.addAll(listEvents());
+		entitiesAttributes.addAll(listAttributes());
+		
+		generateIdForEntity(entitiesComponents);
+		generateIdForEntity(entitiesEvents);
+		generateIdForEntity(entitiesAttributes);	
 	}
 }

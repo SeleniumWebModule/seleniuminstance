@@ -9,10 +9,11 @@ import br.com.rjconsultores.tests.seleniuminstance.exception.SeleniumInstanceExc
 import br.com.rjconsultores.tests.seleniuminstance.util.ValidateUtil;
 
 public class System implements Entity {
-	private Integer id;
+	private String id;
 	private String name;
 	private String address;
 	private String port;
+	private String parentId;
 
 	private String msgErrorScreenRequired;
 	private String msgErrorScreenNullValue;
@@ -27,6 +28,16 @@ public class System implements Entity {
 
 		msgErrorScreenRequired = "Uma ou mais telas devem estar associadas ao sistema.";
 		msgErrorScreenNullValue = "A tela deve ser um valor válido e nulo não é um valor válido.";
+	}
+	
+	@Override
+	public String getId() {
+		return id;
+	}
+	
+	@Override
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -60,14 +71,6 @@ public class System implements Entity {
 	public Collection<Screen> listScreens() {
 		return screens;
 	}
-
-	public Integer getId() {
-		return id;
-	}
-	
-	public void setId(Integer id) {
-		this.id = id;
-	}
 	
 	@Override
 	public void validate() throws SeleniumInstanceException {
@@ -79,13 +82,29 @@ public class System implements Entity {
 			throw new RequiredResourceException(sourceEvent, msgErrorScreenRequired);
 		}
 
-		for (Screen screen : listScreens()) {
+		for (Entity screen : listScreens()) {
+			
 			if (screen == null) {
 				throw new RequiredResourceException(sourceEvent, msgErrorScreenNullValue);
 			}
 
 			screen.validate();
 		}
-	}
+	}	
 
+	@Override
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
+	}
+	
+	public String getParentId() {
+		return parentId;
+	}
+	
+	public void generateIdsForChildrens() {
+		Collection<Entity> entities = new LinkedHashSet<>();
+		entities.addAll(listScreens());
+		
+		generateIdForEntity(entities);
+	}
 }

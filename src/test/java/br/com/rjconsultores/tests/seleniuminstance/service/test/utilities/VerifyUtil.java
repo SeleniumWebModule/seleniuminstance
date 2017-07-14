@@ -45,4 +45,9 @@ public class VerifyUtil {
 		VerifyUtil.verifyError(new ResponseError(new FieldRequireException(sourceEvent, fieldName)),
 				new Register().doRegisterSystem(request));		
 	}
+	
+	public static void verifyId(String id) {
+		Assert.assertNotEquals(id, null);
+		Assert.assertNotEquals(id, "");
+	}
 }

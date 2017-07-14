@@ -9,6 +9,8 @@ import br.com.rjconsultores.tests.seleniuminstance.exception.SeleniumInstanceExc
 import br.com.rjconsultores.tests.seleniuminstance.util.ValidateUtil;
 
 public class Component implements Entity{
+	private String id;
+	private String parentId;
 	private String name;
 	private String description;
 	
@@ -30,6 +32,22 @@ public class Component implements Entity{
 		msgErrorRequiredEvent = "Um ou mais eventos devem estar associados ao componente";
 		msgErrorEventNullValue = "O evento deve ser um valor válido e nulo não é um valor válido.";
 		msgErrorAttributeNullValue = "O atributo deve ser um valor válido e nulo não é um valor válido.";
+	}
+	
+	public String getId() {
+		return id;
+	}
+	
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+	public String getParentId() {
+		return parentId;
+	}
+	
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
 	}
 	
 	public String getName() {
@@ -89,5 +107,17 @@ public class Component implements Entity{
 			event.validate();
 		}
 		
+	}
+	
+	@Override
+	public void generateIdsForChildrens() {
+		Collection<Entity> entitiesAttributes = new LinkedHashSet<>();
+		Collection<Entity> entitiesEvents = new LinkedHashSet<>();
+		
+		entitiesAttributes.addAll(listAttributes());
+		entitiesEvents.addAll(listEvents());
+		
+		generateIdForEntity(entitiesAttributes);	
+		generateIdForEntity(entitiesEvents);
 	}
 }
